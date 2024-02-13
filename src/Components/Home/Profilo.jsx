@@ -11,27 +11,22 @@ const Home = () => {
     return (
         <div className="container">
             <div className="header">
-                <div className="title">Home</div>
+                <div className="title">Profilo</div>
                 <div className="underline"></div>
             </div>
             <div className="elements">
-                <div className="button" onClick={() => {navigate("/home/water")}}>
-                    Versa acqua
+                <div className="button" onClick={() => {navigate("/change")}}>
+                    Cambia username
                 </div>
             </div>
             <div className="elements">
-                <div className="button" onClick={() => {navigate("/home/pianifica")}}>
-                    Pianifica
+                <div className="button" onClick={() => {navigate("/list")}}>
+                    Tutti i dispositivi
                 </div>
             </div>
             <div className="elements">
-                <div className="button" onClick={() => {navigate("/home/profilo")}}>
-                    Profilo
-                </div>
-            </div>
-            <div className="elements">
-                <div className="button red" onClick={() => {auth.logOut()}}>
-                    Logout
+                <div className="button red" onClick={() => {navigate("/delete")}}>
+                    Elimina account
                 </div>
             </div>
         </div>

@@ -1,8 +1,8 @@
 import './DelUser.css'; 
 import {Navigate, useNavigate} from "react-router-dom";
 import { useAuth } from "../Middleware/AuthProvider";
+import { BACKEND_URL } from "../..";
 
-const BACKEND_URL = 'http://192.168.1.126:8080';
 
 const DelUser = () => {
 

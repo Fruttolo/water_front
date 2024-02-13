@@ -1,0 +1,21 @@
+.buttonVersa{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    background: #68c0f3;
+    border-radius: 50px;
+    color: #0c00b4;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 27px;
+  }
+
+  .elements{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
