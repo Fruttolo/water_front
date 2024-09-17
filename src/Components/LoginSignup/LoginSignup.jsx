@@ -33,7 +33,7 @@ const LoginSignup = () => {
     async function Login() {
         let input = {email:email,password:password};
         auth.loginAction(input);
-        setError("Email o password errata");
+        setError("Accesso in corso...");
     }
 
     const [error, setError] = useState("");
