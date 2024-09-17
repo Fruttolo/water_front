@@ -16,7 +16,7 @@ const Home = () => {
             </div>
             <div className="elements">
                 <div className="button" onClick={() => {navigate("/home/water")}}>
-                    Versa acqua
+                    Versa caffè
                 </div>
             </div>
             <div className="elements">

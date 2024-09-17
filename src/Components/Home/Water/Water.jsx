@@ -5,6 +5,7 @@ import  {useAuth} from '../../Middleware/AuthProvider'
 import Slider from '@mui/material/Slider';
 import LocalDrinkIcon from '@mui/icons-material/LocalDrink';
 import WaterDropIcon from '@mui/icons-material/WaterDrop';
+import { BACKEND_URL } from "../../..";
 
 const Home = () => {
 
@@ -12,7 +13,25 @@ const Home = () => {
     const auth = useAuth();
 
     const [sliderValue, setSliderValue] = useState(2);
-    
+    const [showMessage, setShowMessage] = useState("");
+
+    async function versaCaffe() {
+        let item = localStorage.getItem("site");
+        setShowMessage("Caricamento in corso...");
+        fetch(BACKEND_URL+"/coffemachine/makecoffe",{
+            method:"GET",
+            headers:{
+                "Content-Type":"application/json",
+                "Accept":"application/json",
+                "Authorization":"Bearer "+item
+            }
+        }).then(response => {
+            if(response.ok){
+                setShowMessage("Macchinetta accesa, fra 2 minuti avrai il tuo caffè. Non devi fare nient'altro.");
+            }
+        });
+    }
+
     return (
         <div className="container">
             <div className="header">
@@ -42,11 +61,24 @@ const Home = () => {
                             </div>
                         ))}
                     </div>
-                    <div className="buttonVersa" onClick={() => {}}>
+                    <div className="buttonVersa" onClick={() => { versaCaffe() }}>
                         <LocalDrinkIcon style={{ fontSize: 48 }} />
                     </div>
                 </div>
             </div>
+            { showMessage && 
+                <div className="elements" style={{ marginTop: '20px', padding: '10px'}}>
+                        <div className="message" style={{ fontWeight: 'bold', color: 'green' }}>
+                            {showMessage}
+                            <br />
+                            { showMessage != "Caricamento in corso..." &&
+                                <div style={{ fontWeight: 'bold', color: 'red', textAlign: 'center'}}>
+                                    Buona giornata amore, ti amo. ❤️
+                                </div>
+                            }
+                        </div>
+                </div>
+            }
         </div>
     )
 }
