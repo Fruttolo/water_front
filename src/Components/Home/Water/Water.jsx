@@ -13,11 +13,11 @@ const Home = () => {
     const auth = useAuth();
 
     const [sliderValue, setSliderValue] = useState(2);
-    const [showMessage, setShowMessage] = useState("");
+    const [showMessage, setShowMessage] = useState(0);
 
     async function versaCaffe() {
         let item = localStorage.getItem("site");
-        setShowMessage("Caricamento in corso...");
+        setShowMessage(1);
         fetch(BACKEND_URL+"/coffemachine/makecoffe",{
             method:"GET",
             headers:{
@@ -27,7 +27,7 @@ const Home = () => {
             }
         }).then(response => {
             if(response.ok){
-                setShowMessage("Macchinetta accesa, fra 2 minuti avrai il tuo caffè. Non devi fare nient'altro.");
+                setShowMessage(2);
             }
         });
     }
@@ -66,16 +66,23 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-            { showMessage && 
+            { showMessage==2 && 
                 <div className="elements" style={{ marginTop: '20px', padding: '10px'}}>
                         <div className="message" style={{ fontWeight: 'bold', color: 'green' }}>
-                            {showMessage}
+                            Macchinetta accesa. Fra 2 min avrai il tuo caffè. Non devi fare altro.
                             <br />
-                            { showMessage != "Caricamento in corso..." &&
+                            { showMessage == 2 &&
                                 <div style={{ fontWeight: 'bold', color: 'red', textAlign: 'center'}}>
                                     Buona giornata amore, ti amo. ❤️
                                 </div>
                             }
+                        </div>
+                </div>
+            }
+            { showMessage==1 && 
+                <div className="elements" style={{ marginTop: '20px', padding: '10px'}}>
+                        <div className="message" style={{ fontWeight: 'bold', color: 'green' }}>
+                            Caricamento in corso... se questa scritta non va via fra qualche secondo sveglia salvo.
                         </div>
                 </div>
             }
