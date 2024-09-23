@@ -6,6 +6,7 @@ import Slider from '@mui/material/Slider';
 import LocalDrinkIcon from '@mui/icons-material/LocalDrink';
 import WaterDropIcon from '@mui/icons-material/WaterDrop';
 import { BACKEND_URL } from "../../..";
+import { useEffect } from 'react';
 
 const Home = () => {
 
@@ -14,11 +15,18 @@ const Home = () => {
 
     const [sliderValue, setSliderValue] = useState(2);
     const [showMessage, setShowMessage] = useState(0);
+    const [countdown, setCountdown] = useState(10);
 
-    async function versaCaffe() {
+    const arrayQuantity = [null, 15, 20, 25];
+
+    async function accendiMacchinetta() {
+        document.querySelector('.buttonVersa').style.pointerEvents = 'none';
+        document.querySelector('.buttonVersa').style.backgroundColor = 'grey';
+        document.querySelector('.MuiSlider-root').style.pointerEvents = 'none';
+        document.querySelector('.MuiSlider-root').style.color = 'grey';
         let item = localStorage.getItem("site");
         setShowMessage(1);
-        fetch(BACKEND_URL+"/coffemachine/makecoffe",{
+        fetch(BACKEND_URL+"/coffemachine/accendi",{
             method:"GET",
             headers:{
                 "Content-Type":"application/json",
@@ -28,7 +36,44 @@ const Home = () => {
         }).then(response => {
             if(response.ok){
                 setShowMessage(2);
+                countdownTimer();
             }
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
+    async function countdownTimer() {
+        // Countdown di countdown secondi
+        let cd = countdown;
+        let interval = setInterval(() => {
+            cd--;
+            setCountdown(cd);
+            if (cd == 0) {
+                clearInterval(interval);
+                setShowMessage(3);
+                versaCaffe();
+            }
+        }, 1000);
+    }
+
+    async function versaCaffe() {
+        let item = localStorage.getItem("site");
+        fetch(BACKEND_URL+"/coffemachine/manopola?quantity=" + arrayQuantity[sliderValue],{
+            method:"GET",
+            headers:{
+                "Content-Type":"application/json",
+                "Accept":"application/json",
+                "Authorization":"Bearer "+item
+            }
+        }).then(response => {
+            if(response.ok){
+                setTimeout(() => {
+                    setShowMessage(4);
+                }, arrayQuantity[sliderValue] * 1000 + 5000);
+            }
+        }).catch(error => {
+            console.log(error);
         });
     }
 
@@ -61,29 +106,47 @@ const Home = () => {
                             </div>
                         ))}
                     </div>
-                    <div className="buttonVersa" onClick={() => { versaCaffe() }}>
+                    <div className="buttonVersa" onClick={() => { accendiMacchinetta() }}>
                         <LocalDrinkIcon style={{ fontSize: 48 }} />
                     </div>
                 </div>
             </div>
-            { showMessage==2 && 
-                <div className="elements" style={{ marginTop: '20px', padding: '10px'}}>
-                        <div className="message" style={{ fontWeight: 'bold', color: 'green' }}>
-                            Macchinetta accesa. Fra 2 min avrai il tuo caffè. Non devi fare altro.
-                            <br />
-                            { showMessage == 2 &&
-                                <div style={{ fontWeight: 'bold', color: 'red', textAlign: 'center'}}>
-                                    Buona giornata amore, ti amo. ❤️
-                                </div>
-                            }
-                        </div>
-                </div>
-            }
             { showMessage==1 && 
                 <div className="elements" style={{ marginTop: '20px', padding: '10px'}}>
                         <div className="message" style={{ fontWeight: 'bold', color: 'green' }}>
                             Caricamento in corso... se questa scritta non va via fra qualche secondo sveglia salvo.
                         </div>
+                </div>
+            }
+            { showMessage==2 && 
+                <div className="elements" style={{ marginTop: '20px', padding: '10px'}}>
+                        <div className="message" style={{ fontWeight: 'bold', color: 'green', textAlign: 'center' }}>
+                            Macchinetta accesa.
+                            <br />
+                            <div style={{ fontWeight: 'bold', color: 'blue', textAlign: 'center' }}>
+                                La macchinetta si sta scaldando. <br />
+                                Attendi {countdown} secondi.
+                            </div>
+                        </div>
+                </div>
+            }
+            { showMessage==3 && 
+                <div className="elements" style={{ marginTop: '20px', padding: '10px'}}>
+                        <div className="message" style={{ fontWeight: 'bold', color: 'green' }}>
+                            Versamento Caffè in corso....
+                        </div>
+                </div>
+            }
+            { showMessage==4 && 
+                <div className="elements" style={{ marginTop: '20px', padding: '10px'}}>
+                    <div>
+                        <div className="message" style={{ fontWeight: 'bold', color: 'green', textAlign: 'center' }}>
+                            Caffè versato. <br />
+                        </div>
+                        <div style={{ fontWeight: 'bold', color: 'red', textAlign: 'center'}}>
+                            Buona giornata amore, ti amo. ❤️
+                        </div>
+                    </div>
                 </div>
             }
         </div>
