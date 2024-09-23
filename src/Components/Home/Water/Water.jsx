@@ -15,7 +15,7 @@ const Home = () => {
 
     const [sliderValue, setSliderValue] = useState(2);
     const [showMessage, setShowMessage] = useState(0);
-    const [countdown, setCountdown] = useState(10);
+    const [countdown, setCountdown] = useState(120);
 
     const arrayQuantity = [null, 15, 20, 25];
 
