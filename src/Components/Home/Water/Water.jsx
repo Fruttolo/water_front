@@ -1,17 +1,12 @@
 import './Water.css'
 import {useState} from "react";
-import {useNavigate} from "react-router-dom";
-import  {useAuth} from '../../Middleware/AuthProvider'
 import Slider from '@mui/material/Slider';
 import LocalDrinkIcon from '@mui/icons-material/LocalDrink';
 import WaterDropIcon from '@mui/icons-material/WaterDrop';
 import { BACKEND_URL } from "../../..";
-import { useEffect } from 'react';
+import ApiHelper from '../../../Helpers/ApiHelper';
 
 const Home = () => {
-
-    const navigate = useNavigate();
-    const auth = useAuth();
 
     const [sliderValue, setSliderValue] = useState(2);
     const [showMessage, setShowMessage] = useState(0);
@@ -24,23 +19,12 @@ const Home = () => {
         document.querySelector('.buttonVersa').style.backgroundColor = 'grey';
         document.querySelector('.MuiSlider-root').style.pointerEvents = 'none';
         document.querySelector('.MuiSlider-root').style.color = 'grey';
-        let item = localStorage.getItem("site");
         setShowMessage(1);
-        fetch(BACKEND_URL+"/coffemachine/accendi",{
-            method:"GET",
-            headers:{
-                "Content-Type":"application/json",
-                "Accept":"application/json",
-                "Authorization":"Bearer "+item
-            }
-        }).then(response => {
-            if(response.ok){
-                setShowMessage(2);
-                countdownTimer();
-            }
-        }).catch(error => {
-            console.log(error);
-        });
+        const res = await ApiHelper.fullApi("/coffemachine/accendi", "GET");
+        if(res.ok){
+            setShowMessage(2);
+            countdownTimer();
+        }
     }
 
     async function countdownTimer() {
@@ -58,23 +42,14 @@ const Home = () => {
     }
 
     async function versaCaffe() {
-        let item = localStorage.getItem("site");
-        fetch(BACKEND_URL+"/coffemachine/manopola?quantity=" + arrayQuantity[sliderValue],{
-            method:"GET",
-            headers:{
-                "Content-Type":"application/json",
-                "Accept":"application/json",
-                "Authorization":"Bearer "+item
-            }
-        }).then(response => {
-            if(response.ok){
-                setTimeout(() => {
-                    setShowMessage(4);
-                }, arrayQuantity[sliderValue] * 1000 + 5000);
-            }
-        }).catch(error => {
-            console.log(error);
-        });
+
+        const res = await ApiHelper.fullApi("/coffemachine/manopola?quantity=" + arrayQuantity[sliderValue], "GET");
+        
+        if(res.ok){
+            setTimeout(() => {
+                setShowMessage(4);
+            }, arrayQuantity[sliderValue] * 1000 + 5000);
+        }
     }
 
     return (
