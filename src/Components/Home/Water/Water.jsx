@@ -3,7 +3,6 @@ import {useState} from "react";
 import Slider from '@mui/material/Slider';
 import LocalDrinkIcon from '@mui/icons-material/LocalDrink';
 import WaterDropIcon from '@mui/icons-material/WaterDrop';
-import { BACKEND_URL } from "../../..";
 import ApiHelper from '../../../Helpers/ApiHelper';
 
 const Home = () => {
@@ -16,9 +15,12 @@ const Home = () => {
 
     async function accendiMacchinetta() {
         document.querySelector('.buttonVersa').style.pointerEvents = 'none';
-        document.querySelector('.buttonVersa').style.backgroundColor = 'grey';
+        document.querySelector('.buttonVersa').style.background = 'grey';
         document.querySelector('.MuiSlider-root').style.pointerEvents = 'none';
         document.querySelector('.MuiSlider-root').style.color = 'grey';
+        document.querySelectorAll('.droplets').forEach(droplet => {
+            droplet.style.color = 'grey';
+        });
         setShowMessage(1);
         const res = await ApiHelper.fullApi("/coffemachine/accendi", "GET");
         if(res.ok){
@@ -55,14 +57,18 @@ const Home = () => {
     return (
         <div className="container">
             <div className="header">
-                <div className="title">Versa</div>
+                <div className="title">Caffé</div>
                 <div className="underline"></div>
             </div>
-            <div className="elements" style={{ height: 250, width: 300 }}>
+            <div className="elements" style={{ height: 250, width: 300}}>
                 <Slider
+                    style={{ height: 200, width: 50, marginRight: 20, color: "#70380f" }}
                     sx={{
                         '& input[type="range"]': {
-                        WebkitAppearance: 'slider-vertical',
+                            WebkitAppearance: 'slider-vertical',
+                        },
+                        '& .MuiSlider-thumb': {
+                            display: 'none',
                         },
                     }}
                     orientation="vertical"
@@ -77,7 +83,7 @@ const Home = () => {
                     <div style={{ display: 'flex', flexDirection: 'row', marginBottom: "10px" }}>
                         {Array.from({ length: Math.min(3, Math.max(1, sliderValue)) }).map((_, index) => (
                             <div className="icon" key={index}>
-                                <WaterDropIcon style={{ fontSize: 48, color: "#0c00b4" }} />
+                                <WaterDropIcon className="droplets" style={{ fontSize: 48, color: "#70380f" }} />
                             </div>
                         ))}
                     </div>

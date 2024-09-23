@@ -9,9 +9,11 @@ const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const [token, setToken] = useState(sessionStorage.getItem("access_token"));
   const [logged, setLogged] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     check();
+    getUser();
   }, []);
 
   const loginAction = async (item) => {
@@ -51,8 +53,14 @@ const AuthProvider = ({ children }) => {
 
   }
 
+  const getUser = async () => {
+    const response = await ApiHelper.get("/user");
+    console.log('getUser',response.user);
+    setUser(response.user);
+  }
+
   return (
-    <AuthContext.Provider value={{ token, logged,check, loginAction, logOut }}>
+    <AuthContext.Provider value={{ token, logged, user, check, loginAction, logOut }}>
       {children}
     </AuthContext.Provider>
   );
