@@ -26,7 +26,7 @@ const Home = () => {
                 </div>
             </div>
             <div className="elements">
-                <div className="button" onClick={() => {navigate("/home/menusettimanale")}}>
+                <div className="button-disabled" onClick={() => {/* navigate("/home/menusettimanale") */}}>
                     Menu Settimanale
                 </div>
             </div>
