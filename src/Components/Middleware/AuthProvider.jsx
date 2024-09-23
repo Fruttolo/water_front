@@ -1,47 +1,58 @@
-import { useContext, createContext, useState } from "react";
+import { useContext, createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { BACKEND_URL } from "../..";
-
+import ApiHelper from "../../Helpers/ApiHelper";
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem("site") || "");
+
   const navigate = useNavigate();
+  const [token, setToken] = useState(sessionStorage.getItem("access_token"));
+  const [logged, setLogged] = useState(false);
+
+  useEffect(() => {
+    check();
+  }, []);
+
   const loginAction = async (item) => {
-    try {
-      const response = await fetch(BACKEND_URL+"/auth/login",{
-        method:"POST",
-        body:JSON.stringify(item),
-        headers:{
-            "Content-Type":"application/json",
-            "Accept":"*/*"
-        }
-      });
-      const res = await response.json();
-        if (res) {
-          setUser(res.userId);
-          setToken(res.session);
-          localStorage.setItem("site", res.session);
-          navigate("/home");
-          return;
-        }
-        throw new Error(res.message);
-    } catch (err) {
-      console.error(err);
+    const response = await ApiHelper.post(`/auth/login`, item);
+    if (response.access_token) {
+      sessionStorage.setItem("access_token", response.access_token);
+      setToken(response.access_token);
+      setLogged(true);
+      localStorage.setItem("refresh_token", response.refresh_token);
+      navigate("/home");
+      return null;
+    } else {
+      return response;
     }
+
   };
 
   const logOut = () => {
-    setUser(null);
-    setToken("");
-    localStorage.removeItem("site");
+    sessionStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    setToken(null);
+    setLogged(false);
     navigate("/login");
   };
 
+  const check = async () => {
+
+    const response = await ApiHelper.fullApi("/auth/check", "GET");
+    console.log('loggato',response.status);
+    if (response.status !== 200) {
+      setLogged(false);
+      return false;
+    }
+
+    setLogged(true);
+    return true;
+
+  }
+
   return (
-    <AuthContext.Provider value={{ token, user, loginAction, logOut }}>
+    <AuthContext.Provider value={{ token, logged,check, loginAction, logOut }}>
       {children}
     </AuthContext.Provider>
   );

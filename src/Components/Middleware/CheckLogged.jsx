@@ -4,7 +4,8 @@ import { useAuth } from "./AuthProvider";
 
 const CheckLogged = () => {
   const user = useAuth();
-  if (user.token) return <Navigate to="/home" />;
+
+  if (user.logged) return <Navigate to="/home" />;
   return <Outlet />;
 };
 
