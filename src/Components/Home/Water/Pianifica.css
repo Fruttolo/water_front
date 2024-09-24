@@ -1,0 +1,145 @@
+.day-button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background: #a39fdf;
+    border-radius: 50px;
+    color: #000000;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.selected{
+    background: #0c00b4;
+    color: #ffffff;
+}
+
+.elements-pianifica{
+    display: flex;
+    gap: 15px;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.time-picker{
+    display: flex;
+    gap: 15px;
+    margin: auto;
+}
+
+.time-box{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+    margin: auto;
+}
+
+.arrow-button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 30px;
+    background: #0c00b4;
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.time-input{
+    width: 50px;
+    height: 30px;
+    border: none;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    display: flex;
+    border-radius: 10px;
+    background: #a39fdf;
+    color: #000000;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.testo{
+    font-size: 18px;
+    font-weight: 700;
+    color: #000000;
+}
+
+.time-separator{
+    font-size: 18px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    display: flex;
+    font-weight: 800;
+    color: #000000;
+}
+
+.button-pianifica{
+    width: 150px;
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 59px;
+    background: #0c00b4;
+    border-radius: 50px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.button-pianifica-indietro{
+    width: 150px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 59px;
+    background: #838383;
+    border-radius: 50px;
+    color: #0c00b4;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 27px;
+}
+
+.white{
+    color: #000000;
+    background-color: #bbb9b9;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+}
+.box-pianificazione{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: start;
+    background-color: #bbb9b9;
+    width: 300px;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.delete-icon{
+    cursor: pointer;
+    color: red;
+    margin-left: 10px;
+}
+
+

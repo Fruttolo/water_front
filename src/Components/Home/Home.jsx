@@ -21,8 +21,8 @@ const Home = () => {
                 </div>
             </div>
             <div className="disabled">
-                <div className="button-disabled" onClick={() => {/* navigate("/home/pianifica") */}}>
-                    Pianifica
+                <div className="button" onClick={() => {navigate("/home/pianifica")}}>
+                    Pianifica  <span className="badge">New</span>
                 </div>
             </div>
             <div className="elements">
@@ -32,7 +32,7 @@ const Home = () => {
             </div>
             { auth && auth.user && auth.user.role == 1 &&
                 <div className="elements">
-                    <div className="button-disabled" onClick={() => {/* navigate("/home/profilo") */}}>
+                    <div className="button" onClick={() => {navigate("/home/profilo")}}>
                         Profilo
                     </div>
                 </div>

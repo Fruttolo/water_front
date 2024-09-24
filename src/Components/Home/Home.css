@@ -34,3 +34,12 @@
     margin-bottom: 27px;
     opacity: 0.5;
   }
+
+  .badge{
+    margin-left: 10px;
+    background: #f00;
+    color: #fff;
+    border-radius: 50%;
+    padding: 5px;
+    font-size: 10px;
+  }

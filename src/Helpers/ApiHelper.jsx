@@ -41,19 +41,23 @@ const ApiHelper = {
                 }
             });
             if (!response.ok) {
+                if ( response.status === 401 ) {
+                    const newToken = await refresh();
+                    if (newToken) {
+                        return fetch(`${BACKEND_URL}${endpoint}`, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + newToken,
+                            }
+                        });
+                    }
+                }
                 const errorData = await response.json();
                 throw new Error(errorData.error || response.statusText);
             }
             return await response.json();
         } catch (error) {
-
-            if ( error.status === 401 ) {
-                const newToken = await refresh();
-                if (newToken) {
-                    return ApiHelper.get(endpoint);
-                }
-            }
-
             console.log('GET request failed', error.message);
             return error.message;
         }
@@ -69,6 +73,19 @@ const ApiHelper = {
                 body: JSON.stringify(data),
             });
             if (!response.ok) {
+                if ( response.status === 401 ) {
+                    const newToken = await refresh();
+                    if (newToken) {
+                        return fetch(`${BACKEND_URL}${endpoint}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + newToken,
+                            },
+                            body: JSON.stringify(data),
+                        });
+                    }
+                }
                 const errorData = await response.json();
                 throw new Error(errorData.error || response.statusText);
             }
@@ -89,6 +106,19 @@ const ApiHelper = {
                 body: JSON.stringify(data),
             });
             if (!response.ok) {
+                if ( response.status === 401 ) {
+                    const newToken = await refresh();
+                    if (newToken) {
+                        return fetch(`${BACKEND_URL}${endpoint}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + newToken,
+                            },
+                            body: JSON.stringify(data),
+                        });
+                    }
+                }
                 const errorData = await response.json();
                 throw new Error(errorData.error || response.statusText);
             }
@@ -105,6 +135,18 @@ const ApiHelper = {
                 method: 'DELETE',
             });
             if (!response.ok) {
+                if ( response.status === 401 ) {
+                    const newToken = await refresh();
+                    if (newToken) {
+                        return fetch(`${BACKEND_URL}${endpoint}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + newToken,
+                            }
+                        });
+                    }
+                }
                 const errorData = await response.json();
                 throw new Error(errorData.error || response.statusText);
             }
