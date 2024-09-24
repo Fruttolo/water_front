@@ -185,7 +185,7 @@ const Home = () => {
                         </div>
                     </div>
 
-                    { Pianificazioni.map((pianificazione, index) => (
+                    { Pianificazioni && Pianificazioni.length !== 0 && Pianificazioni.map((pianificazione, index) => (
                         <div key={index} className="elements-pianifica">
                             <div className="box-pianificazione">
                                 <div>
