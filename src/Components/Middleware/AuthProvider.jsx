@@ -7,34 +7,30 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
 
   const navigate = useNavigate();
-  const [token, setToken] = useState(sessionStorage.getItem("access_token"));
   const [logged, setLogged] = useState(false);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     check();
-    getUser();
   }, []);
 
   const loginAction = async (item) => {
     const response = await ApiHelper.post(`/auth/login`, item);
     if (response.access_token) {
-      sessionStorage.setItem("access_token", response.access_token);
-      setToken(response.access_token);
-      setLogged(true);
+      localStorage.setItem("access_token", response.access_token);
       localStorage.setItem("refresh_token", response.refresh_token);
+      setLogged(true);
       navigate("/home");
-      return null;
+      getUser();
+      return ;
     } else {
       return response;
     }
-
   };
 
   const logOut = () => {
-    sessionStorage.removeItem("access_token");
+    localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
-    setToken(null);
     setLogged(false);
     navigate("/login");
   };
@@ -42,12 +38,13 @@ const AuthProvider = ({ children }) => {
   const check = async () => {
 
     const response = await ApiHelper.fullApi("/auth/check", "GET");
-    console.log('loggato',response.status);
+    //console.log('loggato',response.status);
     if (response.status !== 200) {
       setLogged(false);
       return false;
     }
 
+    getUser();
     setLogged(true);
     return true;
 
@@ -55,12 +52,11 @@ const AuthProvider = ({ children }) => {
 
   const getUser = async () => {
     const response = await ApiHelper.get("/user");
-    console.log('getUser',response.user);
     setUser(response.user);
   }
 
   return (
-    <AuthContext.Provider value={{ token, logged, user, check, loginAction, logOut }}>
+    <AuthContext.Provider value={{ logged, user, check, loginAction, logOut }}>
       {children}
     </AuthContext.Provider>
   );

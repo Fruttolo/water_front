@@ -10,17 +10,7 @@ const DelUser = () => {
     const auth = useAuth();
 
     async function DeleteUser() {
-        let item = localStorage.getItem("site");
-        await fetch(BACKEND_URL + "/users",{
-            method:"DELETE",
-            headers:{
-                "Content-Type":"application/json",
-                "Accept":"application/json",
-                "Authorization":"Bearer "+item
-            }
-        }).catch((error) => {  
-            console.log(error);
-        });
+        console.log('delete');
         auth.logOut();
     }
 

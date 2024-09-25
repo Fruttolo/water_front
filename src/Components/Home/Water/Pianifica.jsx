@@ -1,6 +1,5 @@
 import './Pianifica.css'
 import {Navigate, useNavigate} from "react-router-dom";
-import  {useAuth} from '../../Middleware/AuthProvider'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -10,11 +9,10 @@ import ApiHelper from '../../../Helpers/ApiHelper';
 const Home = () => {
 
     const navigate = useNavigate();
-    const auth = useAuth();
 
     const [days, setDays] = useState([0, 0, 0, 0, 0, 0, 0, 0]); // first or last is sunday
-    const [hour, setHour] = useState(12);
-    const [minute, setMinute] = useState(30);
+    const [hour, setHour] = useState(new Date().getHours());
+    const [minute, setMinute] = useState(new Date().getMinutes());
 
     const [Action, setAction] = useState('Storico');
     const [ConfirmMessage, setConfirmMessage] = useState('');
@@ -23,10 +21,8 @@ const Home = () => {
     const [Pianificazioni, setPianificazioni] = useState([]);
 
     const GetData = async () => {
-        ApiHelper.get('/coffemachine/schedule')
-            .then(data => {
-                setPianificazioni(data);
-            });
+        const data = await ApiHelper.get('/coffemachine/schedule');
+        setPianificazioni(data);
     }
 
     useEffect(() => {
@@ -64,9 +60,11 @@ const Home = () => {
             return;
         }
 
-        await ApiHelper.post('/coffemachine/schedule', {
-            time: timeString
-        });
+        await ApiHelper.post('/coffemachine/schedule', {time: timeString});
+
+        setDays([0, 0, 0, 0, 0, 0, 0, 0]);
+        setHour(new Date().getHours());
+        setMinute(new Date().getMinutes());
 
         setConfirmMessage('Pianificazione inserita');
         GetData();
@@ -134,7 +132,7 @@ const Home = () => {
                 <>
                     <div className="elements-pianifica">
                         <div className="testo">
-                            Imposta i giorni da pianificare
+                            Imposta i giorni della settimana
                         </div>
                     </div>
 
@@ -155,7 +153,7 @@ const Home = () => {
 
                     <div className="elements-pianifica">
                         <div className="testo">
-                            Imposta l'orario
+                            Imposta l'orario in cui fare il caffè
                         </div>
                     </div>
 
@@ -185,7 +183,7 @@ const Home = () => {
                         </div>
                     </div>
 
-                    { Pianificazioni && Pianificazioni.length !== 0 && Pianificazioni.map((pianificazione, index) => (
+                    { Array.isArray(Pianificazioni) && Pianificazioni.length !== 0 && Pianificazioni.map((pianificazione, index) => (
                         <div key={index} className="elements-pianifica">
                             <div className="box-pianificazione">
                                 <div>

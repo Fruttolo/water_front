@@ -22,7 +22,7 @@ const Home = () => {
             </div>
             <div className="disabled">
                 <div className="button" onClick={() => {navigate("/home/pianifica")}}>
-                    Pianifica  <span className="badge">New</span>
+                    Pianifica{/*  <span className="badge">New</span> */}
                 </div>
             </div>
             <div className="elements">

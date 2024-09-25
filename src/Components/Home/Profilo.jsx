@@ -1,12 +1,10 @@
 import './Home.css'
 import {Navigate, useNavigate} from "react-router-dom";
-import  {useAuth} from '../Middleware/AuthProvider'
 
 
 const Home = () => {
 
     const navigate = useNavigate();
-    const auth = useAuth();
 
     return (
         <div className="container">
