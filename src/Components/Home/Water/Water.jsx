@@ -4,6 +4,7 @@ import Slider from '@mui/material/Slider';
 import LocalDrinkIcon from '@mui/icons-material/LocalDrink';
 import WaterDropIcon from '@mui/icons-material/WaterDrop';
 import ApiHelper from '../../../Helpers/ApiHelper';
+import { useAuth } from '../../Middleware/AuthProvider';
 
 const Home = () => {
 
@@ -22,15 +23,11 @@ const Home = () => {
             droplet.style.color = 'grey';
         });
         setShowMessage(1);
-        const res = await ApiHelper.fullApi("/coffemachine/accendi", "GET");
-        if(res.ok){
-            setShowMessage(2);
-            countdownTimer();
-        }
-    }
+        // accendi la macchinetta e fai il caffè
+        await ApiHelper.get("/coffemachine/makecoffe?quantity=" + arrayQuantity[sliderValue]);
+        setShowMessage(2);
 
-    async function countdownTimer() {
-        // Countdown di countdown secondi
+        // fai partire il countdown
         let cd = countdown;
         let interval = setInterval(() => {
             cd--;
@@ -38,20 +35,13 @@ const Home = () => {
             if (cd == 0) {
                 clearInterval(interval);
                 setShowMessage(3);
-                versaCaffe();
+
+                // fai partire il countdown per il messaggio finale
+                setTimeout(() => {
+                    setShowMessage(4);
+                }, arrayQuantity[sliderValue] * 1000 + 5000);
             }
         }, 1000);
-    }
-
-    async function versaCaffe() {
-
-        const res = await ApiHelper.fullApi("/coffemachine/manopola?quantity=" + arrayQuantity[sliderValue], "GET");
-        
-        if(res.ok){
-            setTimeout(() => {
-                setShowMessage(4);
-            }, arrayQuantity[sliderValue] * 1000 + 5000);
-        }
     }
 
     return (
