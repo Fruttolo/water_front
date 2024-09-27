@@ -19,6 +19,7 @@ const Home = () => {
 
     const addTodo = async () => {
         await ApiHelper.post('/menu', {description: newTodo});
+        setNewTodo("");
         GetData();
     };
 
