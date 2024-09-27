@@ -11,6 +11,7 @@ import DelUser from './Components/Manage/DelUser';
 import ChangeUsername from './Components/Manage/ChangeUsername';
 import ListUsers from './Components/Manage/ListUsers';
 import PasswordDimenticata from "./Components/Manage/PasswordDimenticata";
+import MenuSettimanale from "./Components/Home/Water/MenuSettimanale";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
                 <Route path="/home/profilo" element={<Profilo />} />
                 <Route path="/home/water" element={<Water />} />
                 <Route path="/home/pianifica" element={<Pianifica />} />
+                <Route path="/home/menusettimanale" element={<MenuSettimanale />} />
               <Route path="/delete" element={<DelUser />} />
               <Route path="/change" element={<ChangeUsername />} />
               <Route path="/list" element={<ListUsers />} />

@@ -1,7 +1,6 @@
 import './Home.css'
-import {Navigate, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import  {useAuth} from '../Middleware/AuthProvider'
-import {useEffect, useState} from "react";
 
 
 const Home = () => {
@@ -22,12 +21,12 @@ const Home = () => {
             </div>
             <div className="disabled">
                 <div className="button" onClick={() => {navigate("/home/pianifica")}}>
-                    Pianifica{/*  <span className="badge">New</span> */}
+                    Pianifica
                 </div>
             </div>
             <div className="elements">
-                <div className="button-disabled" onClick={() => {/* navigate("/home/menusettimanale") */}}>
-                    Menu Settimanale
+                <div className="button" onClick={() => {navigate("/home/menusettimanale")}}>
+                    Menu Settimanale <span className="badge">New</span>
                 </div>
             </div>
             { auth && auth.user && auth.user.role == 1 &&
